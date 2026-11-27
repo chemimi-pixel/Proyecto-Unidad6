@@ -6,6 +6,7 @@ DROP VIEW IF EXISTS vw_inventario_resumen;
 DROP PROCEDURE IF EXISTS sp_buscar_producto_codigo;
 DROP PROCEDURE IF EXISTS sp_obtener_usuario_login;
 DROP PROCEDURE IF EXISTS sp_registrar_producto;
+DROP PROCEDURE IF EXISTS sp_actualizar_producto;
 DROP PROCEDURE IF EXISTS sp_registrar_movimiento;
 DROP PROCEDURE IF EXISTS sp_historial_movimientos;
 DROP FUNCTION IF EXISTS fn_dias_para_caducar;
@@ -114,6 +115,64 @@ BEGIN
     (TRIM(p_codigo_barras), TRIM(p_nombre), p_tipo, p_stock_inicial,
      p_fecha_caducidad, p_descripcion);
   SET p_id_producto = LAST_INSERT_ID();
+  SET @app_usuario_id = NULL;
+  SET @app_nombre_usuario = NULL;
+  COMMIT;
+END$$
+
+CREATE PROCEDURE sp_actualizar_producto(
+  IN p_id_usuario INT,
+  IN p_id_producto INT,
+  IN p_codigo_barras VARCHAR(64),
+  IN p_nombre VARCHAR(120),
+  IN p_tipo VARCHAR(16),
+  IN p_fecha_caducidad DATE,
+  IN p_descripcion VARCHAR(255)
+)
+MODIFIES SQL DATA
+BEGIN
+  DECLARE v_nombre_usuario VARCHAR(50) DEFAULT NULL;
+  DECLARE v_producto_existe INT DEFAULT 0;
+  DECLARE EXIT HANDLER FOR SQLEXCEPTION
+  BEGIN
+    ROLLBACK;
+    SET @app_usuario_id = NULL;
+    SET @app_nombre_usuario = NULL;
+    RESIGNAL;
+  END;
+
+  IF p_codigo_barras IS NULL OR CHAR_LENGTH(TRIM(p_codigo_barras)) = 0 THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El codigo de barras es obligatorio.';
+  END IF;
+  IF p_nombre IS NULL OR CHAR_LENGTH(TRIM(p_nombre)) = 0 THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El nombre del producto es obligatorio.';
+  END IF;
+  IF p_tipo IS NULL OR p_tipo NOT IN ('reactivo', 'material') THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El tipo debe ser reactivo o material.';
+  END IF;
+
+  SELECT nombre_usuario INTO v_nombre_usuario
+  FROM usuarios
+  WHERE id_usuario = p_id_usuario AND estado = 'activo';
+  IF v_nombre_usuario IS NULL THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El usuario responsable no esta activo.';
+  END IF;
+  SELECT COUNT(*) INTO v_producto_existe
+  FROM productos_lab WHERE id_producto = p_id_producto;
+  IF v_producto_existe = 0 THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El producto no existe.';
+  END IF;
+
+  START TRANSACTION;
+  SET @app_usuario_id = p_id_usuario;
+  SET @app_nombre_usuario = v_nombre_usuario;
+  UPDATE productos_lab
+  SET codigo_barras = TRIM(p_codigo_barras),
+      nombre = TRIM(p_nombre),
+      tipo = p_tipo,
+      fecha_caducidad = p_fecha_caducidad,
+      descripcion = p_descripcion
+  WHERE id_producto = p_id_producto;
   SET @app_usuario_id = NULL;
   SET @app_nombre_usuario = NULL;
   COMMIT;

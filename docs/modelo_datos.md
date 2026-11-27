@@ -121,6 +121,7 @@ erDiagram
 | Procedimiento | `sp_buscar_producto_codigo` | Busca un producto por codigo de barras. |
 | Procedimiento | `sp_obtener_usuario_login` | Obtiene los datos necesarios para verificar el inicio de sesion. |
 | Procedimiento | `sp_registrar_producto` | Registra producto y devuelve su identificador con `OUT`. |
+| Procedimiento | `sp_actualizar_producto` | Actualiza datos descriptivos sin permitir modificar el stock directamente. |
 | Procedimiento | `sp_registrar_movimiento` | Registra entrada/salida en una transaccion y devuelve movimiento y stock resultante. |
 | Procedimiento | `sp_historial_movimientos` | Consulta movimientos de un producto o todos los productos. |
 | Vista | `vw_inventario_resumen` | Usa ambas funciones para presentar existencia y estado de caducidad. |

@@ -24,7 +24,7 @@ El stock de los productos es una existencia inicial. A partir de ahi, las entrad
 
 ## Seguridad
 
-`usuarios.rol` controla el rol funcional de la aplicacion. `sql/03_seguridad.sql` crea roles MySQL separados: administrador, operador y consulta. Operadores no reciben permisos directos para insertar o actualizar productos/movimientos; usan procedimientos almacenados. El administrador local debe crear las cuentas MySQL de conexion y asignarles el rol adecuado siguiendo los ejemplos comentados al final de ese script.
+`usuarios.rol` controla el rol funcional de la aplicacion. `sql/03_seguridad.sql` crea roles MySQL separados: administrador, operador, consulta y aplicacion. Operadores no reciben permisos directos para insertar o actualizar productos/movimientos; usan procedimientos almacenados. El administrador local crea la cuenta MySQL de conexion y le asigna el rol tecnico de aplicacion.
 
 El usuario `consulta` de la aplicacion es de solo lectura funcionalmente. La aplicacion de la etapa 2 tambien debe impedir operaciones no permitidas por rol, aunque el menu o boton no se muestre.
 
