@@ -48,7 +48,7 @@ GRANT EXECUTE ON FUNCTION sistema_laboratorio.fn_dias_para_caducar TO 'rol_lab_a
 GRANT EXECUTE ON FUNCTION sistema_laboratorio.fn_hay_existencia TO 'rol_lab_aplicacion';
 
 -- Crear la cuenta MySQL con una contrasena local y asignarle el rol:
--- CREATE USER 'app_laboratorio'@'localhost' IDENTIFIED BY 'contrasena-local';
--- GRANT 'rol_lab_aplicacion' TO 'app_laboratorio'@'localhost';
--- SET DEFAULT ROLE 'rol_lab_aplicacion' TO 'app_laboratorio'@'localhost';
+-- CREATE USER 'app_laboratorio'@'127.0.0.1' IDENTIFIED BY 'contrasena-local';
+-- GRANT 'rol_lab_aplicacion' TO 'app_laboratorio'@'127.0.0.1';
+-- SET DEFAULT ROLE 'rol_lab_aplicacion' TO 'app_laboratorio'@'127.0.0.1';
 

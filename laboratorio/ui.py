@@ -127,7 +127,7 @@ class Dashboard(tk.Tk):
         self.inventory_barcode.bind("<Return>", lambda _event: self._scan_inventory())
         ttk.Label(
             search,
-            text="Conecta el lector fisico y escanea; el lector envia el codigo y Enter.",
+            text="Escribe o escanea el codigo; Enter inicia la busqueda.",
         ).pack(side="left", padx=(14, 0))
 
         self.inventory_tree = self._make_tree(

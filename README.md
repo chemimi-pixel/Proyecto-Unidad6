@@ -19,9 +19,9 @@ Desde una cuenta administradora de MySQL, ejecutar en este orden:
 Despues, crear una cuenta MySQL local para la aplicacion y asignarle el rol tecnico:
 
 ```sql
-CREATE USER 'app_laboratorio'@'localhost' IDENTIFIED BY 'elige-una-contrasena-local';
-GRANT 'rol_lab_aplicacion' TO 'app_laboratorio'@'localhost';
-SET DEFAULT ROLE 'rol_lab_aplicacion' TO 'app_laboratorio'@'localhost';
+CREATE USER 'app_laboratorio'@'127.0.0.1' IDENTIFIED BY 'elige-una-contrasena-local';
+GRANT 'rol_lab_aplicacion' TO 'app_laboratorio'@'127.0.0.1';
+SET DEFAULT ROLE 'rol_lab_aplicacion' TO 'app_laboratorio'@'127.0.0.1';
 ```
 
 Usa una contrasena local propia y no la guardes en Git.
